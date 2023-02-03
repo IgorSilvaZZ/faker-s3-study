@@ -28,6 +28,21 @@ def upload_to_s3(file_name_to_upload, bucket, key):
     except Exception as e:
         logging.error(e)
 
+def put_to_s3(file_name_to_put, bucket, key):
+    try:
+        s3.put_object(Body=file_name_to_put, Bucket=bucket, Key=key, Metadata={'file': 'zip'})
+    except Exception as e:
+        logging.error(e)
+
+def get_head_object(bucket, key):
+    try:
+        response = s3.head_object(Bucket=bucket, Key=key)
+
+        return response
+    except Exception as e:
+        logging.error(e)
+
+
 def verify_exists_object(bucket, key):
     response = s3.list_objects_v2(Bucket=bucket, Prefix=key)
 

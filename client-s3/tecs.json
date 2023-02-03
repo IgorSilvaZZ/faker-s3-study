@@ -1,0 +1,6 @@
+{
+    "Courses": ["NodeJS", "ReactJS", "Python"],
+    "Fee": [22000,25000,24000],
+    "Duration": ["30day", "25day", "20day"],
+    "Discount": [1500, 1000, 2300]
+}
