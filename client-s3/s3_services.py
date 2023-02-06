@@ -28,9 +28,9 @@ def upload_to_s3(file_name_to_upload, bucket, key):
     except Exception as e:
         logging.error(e)
 
-def put_to_s3(file_name_to_put, bucket, key):
+def put_to_s3(file_name_to_put, bucket, key, metadata):
     try:
-        s3.put_object(Body=file_name_to_put, Bucket=bucket, Key=key, Metadata={'file': 'zip'})
+        s3.put_object(Body=open(file_name_to_put, 'rb'), Bucket=bucket, Key=key, Metadata=metadata)
     except Exception as e:
         logging.error(e)
 
