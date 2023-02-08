@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from zipfile import ZipFile
+from zipfile import ZipFile, ZIP_DEFLATED
 import json
 import pandas as pd
 from os.path import basename
@@ -106,6 +106,65 @@ def create_file_csv_ziped() :
     except Exception as e:
         print(str(e))
 
+def create_csv_file_first_line_change():
+    json_users_file = open('users.json')
+
+    users = json.load(json_users_file)
+
+    columns = ['name', 'city']
+
+    try:
+        name_csv_file = "users.csv"
+
+        file_csv = open(name_csv_file, 'a')
+        file_csv.write('Fevereiro, 2023\n')
+        file_csv.close()
+
+        df = pd.DataFrame(users)
+
+        df.to_csv(name_csv_file, index=False, columns=columns, header=False, mode='a')
+
+    except Exception as e:
+        print(str(e))
+
+def create_multiple_files_to_ziped():
+    json_users_file = open('users.json')
+
+    users = json.load(json_users_file)
+
+    columns_name_users = ['name', 'city']
+
+    json_courses_file = open('tecs.json')
+
+    technologies = json.load(json_courses_file)
+
+    columns_name_courses = ['Courses', 'Fee','Discount']
+
+    try:
+        name_users_csv = 'users.csv'
+
+        df = pd.DataFrame(users)
+
+        df.to_csv(name_users_csv, index=False, columns=columns_name_users)
+
+        name_tecs_csv = 'tecs.csv'
+
+        df = pd.DataFrame(technologies)
+
+        df.to_csv(name_tecs_csv, index=False, columns=columns_name_courses)
+
+        list_files_to_compression = [name_users_csv, name_tecs_csv]
+
+        file_name_zip = 'files.zip'
+
+        with ZipFile(file_name_zip, 'w') as zip_file:
+            for file in list_files_to_compression:
+                zip_file.write(file, compress_type=ZIP_DEFLATED)
+
+    except Exception as e:
+        print(str(e))
+
+
 def bootstrap():
     name = 'igorsilva'
 
@@ -138,8 +197,10 @@ def bootstrap():
     print(response)
     
 # bootstrap()
-send_create_csv()
+# send_create_csv()
 # list_paginate_object('my_bucket', 'igorsilva/030223')
 # create_file_csv_ziped()
 # url_object = generate_url('my_bucket', 'igorsilva/030223/courses.zip')
 # print(url_object)
+# create_multiple_files_to_ziped()
+create_csv_file_first_line_change()
