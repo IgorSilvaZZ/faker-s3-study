@@ -49,6 +49,30 @@ def list_paginate_object(bucket, prefix):
     print(response)
     return response
 
+def list_paginate_object_metadata_filter(bucket, prefix, metadata):
+    response = []
+    
+    files_paginate = list_paginate_objects(bucket, prefix)
+
+    for file in files_paginate:
+        key = file['Key']
+
+        url = generate_url(bucket, key)
+
+        name_file = os.path.basename(key)
+
+        object_response = get_head_object(bucket, key)
+
+        if metadata in object_response['Metadata']:
+            print(object_response['Metadata'][metadata])
+            new_response_object = { 'name': name_file, 'url': url, "metadatas": object_response['Metadata'] }
+
+            response.append(new_response_object)
+    
+    print(response)
+    
+    return response
+
 def send_create_csv():
     bucket_name = 'my_bucket'
 
@@ -203,4 +227,5 @@ def bootstrap():
 # url_object = generate_url('my_bucket', 'igorsilva/030223/courses.zip')
 # print(url_object)
 # create_multiple_files_to_ziped()
-create_csv_file_first_line_change()
+# create_csv_file_first_line_change()
+list_paginate_object_metadata_filter('my_bucket', 'igorsilva/030223', 'file')
